@@ -21,7 +21,7 @@
     "test": "test"
   },
   "dependencies": {
-    "sortablejs": "^1.6.0"
+    "sortablejs": "github:RubaXa/Sortable#2600dc6b508f80ce0e2c6fe766f515cd96a75c6b"
   },
   "devDependencies": {
     "babel-plugin-transform-object-assign": "^6.22.0",

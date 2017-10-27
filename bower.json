@@ -25,6 +25,6 @@
   ],
   "dependencies": {
     "vue": "^2.0.2",
-    "Sortable": "^1.6.0"
+    "Sortable": "2600dc6b508f80ce0e2c6fe766f515cd96a75c6b"
   }
 }
