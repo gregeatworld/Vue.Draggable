@@ -24,7 +24,7 @@
     "gulpfile.js"
   ],
   "dependencies": {
-    "vue": "^2.0.2",
-    "Sortable": "2600dc6b508f80ce0e2c6fe766f515cd96a75c6b"
+    "vue": "^2.5.16",
+    "Sortable": "8794188794eff5685ded3e5755fe8e9212ab994f"
   }
 }

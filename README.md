@@ -31,6 +31,7 @@ Based on and offering all features of [Sortable.js](https://github.com/RubaXa/So
 * Compatible with Vue.js 2.0 transition-group
 * Cancellation support
 * Events reporting any changes when full control is needed
+* Reuse existing UI library components (such as [vuetify](https://vuetifyjs.com), [element](http://element.eleme.io/), or [vue material](https://vuematerial.io) etc...) and make them draggable using `element` and `componentData` props
 
 ## For Vue.js 2.0
 
@@ -39,7 +40,7 @@ Use draggable component:
 ### Typical use:
 ``` html
 <draggable v-model="myArray" :options="{group:'people'}" @start="drag=true" @end="drag=false">
-   <div v-for="element in myArray">{{element.name}}</div>
+   <div v-for="element in myArray" :key="element.id">{{element.name}}</div>
 </draggable>
 ```
 .vue file:
@@ -116,7 +117,7 @@ Type: `Array`<br>
 Required: `false`<br>
 Default: `null`
 
-Altenative to the `value` prop, list is an array to be synchronized with drag-and-drop.<br>
+Alternative to the `value` prop, list is an array to be synchronized with drag-and-drop.<br>
 The main diference is that `list` prop is updated by draggable component using splice method, whereas `value` is immutable.<br>
 **Do not use in conjunction with value prop.**
 
@@ -127,11 +128,15 @@ Required: `false`
 Option used to initialize the sortable object see: [sortable option documentation](https://github.com/RubaXa/Sortable#options)<br>
 Note that all the method starting by "on" will be ignored as draggable component expose the same API via events.
 
+As an example, a drag handle can be added using this binding `:options="{handle:'.handle'}"`. Read the linked documentation for other options available to you.
+
 #### element
 Type: `String`<br>
 Default: `'div'`
 
-HTML node type of the element that draggable component create as outer element for the included slot.
+HTML node type of the element that draggable component create as outer element for the included slot.<br>
+It is also possible to pass the name of vue component as element. In this case, draggable attribute will be passed to the create component.<br>
+See also [componentData](#componentdata) if you need to set props or event to the created component.
 
 #### clone
 Type: `Function`<br>
@@ -178,6 +183,45 @@ checkMove: function(evt){
 ```
 See complete example: [Cancel.html](https://github.com/SortableJS/Vue.Draggable/blob/master/examples/Cancel.html), [cancel.js](https://github.com/SortableJS/Vue.Draggable/blob/master/examples/script/cancel.js)
 
+#### componentData
+Type: `Object`<br>
+Required: `false`<br>
+Default: `null`<br>
+
+This props is used to pass additional information to child component declared by [element props](#element).<br>
+Value:
+* `props`: props to be passed to the child component
+* `on`: events to be subscribe in the child component
+
+Example (using [element UI library](http://element.eleme.io/#/en-US)):
+```HTML
+<draggable element="el-collapse" :list="list" :component-data="getComponentData()">
+    <el-collapse-item v-for="e in list" :title="e.title" :name="e.name" :key="e.name">
+        <div>{{e.description}}</div>
+     </el-collapse-item>
+</draggable>
+```
+```javascript
+methods: {
+    handleChange() {
+      console.log('changed');
+    },
+    inputChanged(value) {
+      this.activeNames = value;
+    },
+    getComponentData() {
+      return {
+        on: {
+          change: this.handleChange,
+          input: this.inputChanged
+        },
+        props: {
+          value: this.activeNames
+        }
+      };
+    }
+  }
+```
 
 ### Events
 
@@ -286,12 +330,12 @@ https://jsfiddle.net/dede89/L54yu3L9/
 ```HTML
 
 <!-- CDNJS :: Vue (https://cdnjs.com/) -->
-<script src="//cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/vue/2.5.2/vue.min.js"></script>
 
 <!-- CDNJS :: Sortable (https://cdnjs.com/) -->
-<script src="//cdnjs.cloudflare.com/ajax/libs/Sortable/1.6.0/Sortable.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sortablejs@1.7.0/Sortable.min.js"></script>
 
 <!-- CDNJS :: Vue.Draggable (https://cdnjs.com/) -->
-<script src="//cdnjs.cloudflare.com/ajax/libs/Vue.Draggable/2.14.1/vuedraggable.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/Vue.Draggable/2.16.0/vuedraggable.min.js"></script>
 
 ```
